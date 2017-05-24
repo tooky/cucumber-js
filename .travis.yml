@@ -2,25 +2,32 @@ cache:
   directories:
     - $HOME/node_modules
 
-deploy:
-  - on:
-      node: "6"
-      tags: true
-    provider: script
-    script: scripts/deploy.sh
-    skip_cleanup: true
-  - api_key: "$NPM_AUTH_TOKEN"
-    email: "charles.w.rudolph@gmail.com"
-    on:
-      node: "6"
-      tags: true
-    provider: npm
-    skip_cleanup: true
+jobs:
+  include:
+    - deploy:
+        on:
+          tags: true
+        provider: script
+        script: scripts/deploy.sh
+        skip_cleanup: true
+      node_js: "6"
+      script: echo "Updating Github Pages"
+      stage: deploy
+    - deploy:
+        api_key: "$NPM_AUTH_TOKEN"
+        email: "charles.w.rudolph@gmail.com"
+        on:
+          tags: true
+        provider: npm
+        skip_cleanup: true
+      node_js: "6"
+      script: echo "Deploying to npm"
+      stage: deploy
 
 language: node_js
 
 node_js:
-  - '7'
+  - "7"
   - "6"
 
 notifications:
