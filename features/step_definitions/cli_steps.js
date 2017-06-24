@@ -6,18 +6,24 @@ import {normalizeText} from '../support/helpers'
 import stringArgv from 'string-argv'
 
 defineSupportCode(function({When, Then}) {
-  When(/^I run cucumber.js(?: with `(|.+)`)?$/, {timeout: 10000}, function(args) {
+  When(/^I run cucumber.js(?: with `(|.+)`)?$/, {timeout: 10000}, function(
+    args
+  ) {
     args = stringArgv(args || '')
     return this.run(this.localExecutablePath, args)
   })
 
-  When(/^I run cucumber.js \(installed (locally|globally)\)$/, {timeout: 10000}, function(location) {
-    if (location === 'locally') {
-      return this.run(this.localExecutablePath, [])
-    } else {
-      return this.run(this.globalExecutablePath, [])
+  When(
+    /^I run cucumber.js \(installed (locally|globally)\)$/,
+    {timeout: 10000},
+    function(location) {
+      if (location === 'locally') {
+        return this.run(this.localExecutablePath, [])
+      } else {
+        return this.run(this.globalExecutablePath, [])
+      }
     }
-  })
+  )
 
   Then(/^it passes$/, function() {})
 
